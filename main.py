@@ -292,11 +292,3 @@ def on_text_message(data):
         except Exception as e: print(e)
 
     except Exception as e: print(e)
-
-
-# @client.event("on_voice_message")
-# def on_voice_message(data):
-#     kwargs = {'chatId': data.json['chatMessage']['threadId'], 'replyTo': data.json['chatMessage']['messageId']}
-#     sub_client.send_message(**kwargs, message=data.json['chatMessage']['mediaValue'])
-#     print(data.json['chatMessage']['mediaValue'])  # ссылка на гс если само гс
-#     print(data.json['chatMessage']['extensions']['replyMessage']['mediaValue'])  # ссылка на гс если пересланное
