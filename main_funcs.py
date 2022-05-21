@@ -284,9 +284,9 @@ def mention(message: str, chat_info):
 
 
 def coin():  # useless func xd
-    return rnd.choices(['heads', 'tails', 'edge'], weights=[49.75, 49.75, 0.50])[0]
+    return rnd.choices(['𝐡𝐞𝐚𝐝𝐬', '𝐭𝐚𝐢𝐥𝐬', '𝐞𝐝𝐠𝐞'], weights=[49.75, 49.75, 0.50])[0]
     # from collections import Counter
-    # print(Counter(rnd.choices(['heads', 'tails', 'edge'], weights=[49.75, 49.75, 0.50])[0] for _ in range(1000000)))
+    # print(Counter(rnd.choices(['𝐡𝐞𝐚𝐝𝐬', '𝐭𝐚𝐢𝐥𝐬', '𝐞𝐝𝐠𝐞'], weights=[49.75, 49.75, 0.50])[0] for _ in range(1000000)))
     # ~ Counter({'решка': 497835, 'орёл': 497274, 'ребро': 4891})
 
 
