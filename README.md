@@ -5,7 +5,7 @@
 Bot for Amino based on [amino.fix](https://pypi.org/project/amino.fix/) and [amino.py](https://github.com/Slimakoi/Amino.py) ([docs](https://aminopy.readthedocs.io/en/latest/))
 
 #### How to start?
-1. Only supports Python 3.x. To install aminofix, run `python3 -m pip install amino.fix`.
+1. Only supports Python 3.x. To install aminofix, run `pip install amino.fix`.
 2. Make a folder on your pc.
 3. Move all files to this folder.
 4. Run db_init.py, then close it.
