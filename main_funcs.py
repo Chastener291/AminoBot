@@ -4,7 +4,7 @@ import random as rnd
 from db import *
 
 
-client = amino.Client(socketDebugging=False)
+client = amino.Client()
 client.login(email=EMAIL, password=PASSWORD)  # check db.py
 sub_client = amino.SubClient(comId=CID, profile=client.profile)
 
@@ -313,6 +313,3 @@ def report(content, user_id, com_id, chat_id, msg_time):
     except Exception: chat_link = '-'
     message = f'Report from {user_link}\nChat: {chat_link}\nUTC Time: {" ".join(msg_time[:-1].split("T"))}\nMessage: {" ".join(content)}'
     return message
-
-
-
