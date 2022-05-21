@@ -12,4 +12,4 @@ Bot for Amino based on [amino.fix](https://pypi.org/project/amino.fix/) and [ami
 5. Open the db.py and read the comments about EMAIL, PASSWORD etc.
 6. Fill in the constants in the db.py
 7. Run the main.py
-8. something else?
+8. If you want you can delete db_init.py
