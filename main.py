@@ -55,12 +55,13 @@ def on_text_message(data):
                 if len(content) == 1:
                     return sub_client.send_message(**kwargs, message=
                                                    '[b]Command categories:\n\n'
-                                                   '[i]info\n'
-                                                   '[i]chat\n'
-                                                   '[i]fun\n\n'
+                                                   '[ci]info\n'
+                                                   '[ci]chat\n'
+                                                   '[ci]fun\n\n'
                                                    '[i]send !help {category} for command list.\n'
                                                    '[i]The values in (brackets) are required.\n'
-                                                   '[i]The values in [brackets] are optional.')
+                                                   '[i]The values in [brackets] are optional.\n'
+                                                   'GitHub Link - github.com/K1rL3s/aminobot')
                 if content[1].lower() == 'info':
                     return sub_client.send_message(**kwargs, message=
                                                    '[bc]Information\n\n'
