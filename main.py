@@ -58,9 +58,9 @@ def on_text_message(data):
                                                    '[ci]info\n'
                                                    '[ci]chat\n'
                                                    '[ci]fun\n\n'
-                                                   '[i]send !help {category} for command list.\n'
-                                                   '[i]The values in (brackets) are required.\n'
-                                                   '[i]The values in [brackets] are optional.\n'
+                                                   'send !help {category} for command list.\n'
+                                                   'The values in (brackets) are required.\n'
+                                                   'The values in [brackets] are optional.\n'
                                                    'GitHub Link - github.com/K1rL3s/aminobot')
                 if content[1].lower() == 'info':
                     return sub_client.send_message(**kwargs, message=
@@ -250,7 +250,7 @@ def on_text_message(data):
                     if message == 'nostart':
                         return sub_client.send_message(**kwargs, message='The duel hasnt started yet!')
                     if message == 'noturn':
-                        return sub_client.send_message(**kwargs, message='Not your turn!!')
+                        return sub_client.send_message(**kwargs, message='Not your turn!')
                     if message == 'miss':
                         return sub_client.send_message(**kwargs, message=f'Miss. Next player shot!\n'
                                                                          f'Shots: {duel.shots}')
@@ -280,7 +280,12 @@ def on_text_message(data):
 
         if content[0][1:].lower() == 'chatimages':
             try:
-                pass
+                chat_icon = chat_info.icon
+                chat_bg = chat_info.backgroundImage
+                sub_client.send_message(**kwargs, message=
+                                        f'Icon: {"There is no icon" if chat_icon is None else chat_icon}\n'
+                                        f'Background: {"There is no bg" if chat_bg is None else chat_bg}')
+                return
             except Exception as e: print(e)
 
         try: return sub_client.send_message(**kwargs, message=
@@ -291,5 +296,5 @@ def on_text_message(data):
                                             '3. Invalid arguments.\n'
                                             '4. Contact the creator on github.')
         except Exception as e: print(e)
-
+          
     except Exception as e: print(e)
