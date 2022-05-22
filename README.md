@@ -12,9 +12,10 @@ Bot for Amino based on [amino.fix](https://pypi.org/project/amino.fix/) and [ami
 5. Run start.py and follow the instructions.
 6. Open the db.py and read the comments about EMAIL, PASSWORD etc.
 7. Fill in the constants in the db.py.
-8. Run the main.py.
-9. Enjoy.
-10. If you want you can delete db_init.py.
+8. Make sure the bot account has access to write to the these chats.
+9. Run the main.py.
+10. Enjoy.
+11. If you want you can delete db_init.py.
 
 ### Useful discord servers:
 [Dev Land](https://discord.com/invite/68wchgsKdX), [Amino.fix](https://discord.gg/Bf3dpBRJHj), [TechVision](https://discord.gg/JyVZEVXGZE), I'm - K1rLes#3663 
