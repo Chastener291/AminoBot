@@ -58,6 +58,8 @@ def on_text_message(data):
                                             '[c]Categories - info, chat, fun.\n\n'
                                             '[ci]!get (amino-url)\n'
                                             '[c]The object id\n\n'
+                                            '[ci]!chatimages\n'
+                                            '[c]The сhat background and icon.\n\n'
                                             '[ci]!report [message]\n'
                                             '[c]Send your message to the creator.\n\n'
                                             '[ci]!user [user-link]\n'
@@ -88,6 +90,10 @@ def on_text_message(data):
                                             '[c]Random number. The default range is 1 to 100.\n\n'
                                             '[ci]!coin\n'
                                             '[c]Tails, heads or edge (0.5%).\n\n'
+                                            '[ci]!follow\n'
+                                            '[c]Subscribe to you <3.\n\n'
+                                            '[ci]!kickorg\n'
+                                            "[c]Prank the chat's Host :).\n\n"
                                             '[bc]Duels\n'
                                             '[ci]!duel send (@notify)\n'
                                             '[c]Sends a duel to whoever is mentioned.\n\n'
@@ -258,7 +264,7 @@ def on_text_message(data):
         if content[0].lower() == 'kickorg':  # like a prank
             try:
                 sub_client.send_message(**kwargs, mentionUserIds=[author_id], message=
-                                        f'Starting host transfer ro <${author_name}$>...')
+                                        f'Starting host transfer to <${author_name}$>...')
                 time.sleep(3)  # ???
                 sub_client.send_message(chatId=chat_id, messageType=107, message=
                                         f'Участник {author_name} стал огранизатором этого чата.')
