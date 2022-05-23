@@ -4,51 +4,38 @@ from main_funcs import *
 @client.event("on_text_message")
 def on_text_message(data):
     try:
-        if data.json['chatMessage']['threadId'] not in READCHATS: return  # READCHATS - check db.py
+        if data.json['chatMessage']['content'][0] != '!': return
+        # uncommnet next string (9) to check only readchats (check db.py)
+        # if data.json['chatMessage']['threadId'] not in READCHATS: return  # READCHATS - check db.py
         # Data processing
-        chat_info = sub_client.get_chat_thread(data.json['chatMessage']['threadId'])
+        sub_client = amino.SubClient(comId=str(data.json['ndcId']), profile=client.profile)
+        chat_id = data.json['chatMessage']['threadId']
+        chat_info = sub_client.get_chat_thread(chat_id)
         chat_host_id = chat_info.json['author']['uid']
         chat_host_name = chat_info.json['author']['nickname']
-        chat_name = chat_info.json['title']
-        chat_id = data.json['chatMessage']['threadId']
+        # chat_name = chat_info.json['title']
         author_name = data.json['chatMessage']['author']['nickname']
         author_id = data.json['chatMessage']['author']['uid']
         msg_id = data.json['chatMessage']['messageId']
         msg_time = data.json['chatMessage']['createdTime']
         msg_content = data.json['chatMessage']['content']
-        com_id = str(chat_info.json['ndcId'])
+        com_id = str(data.json['ndcId'])
         # A little magic
-        console_log(msg_time, chat_name, author_name, msg_content)
-        kwargs = {"chatId": chat_id, "replyTo": msg_id}
+        # console_log(msg_time, chat_name, author_name, msg_content)
+        kwargs = {"chatId": chat_id, "replyTo": msg_id}  # "comId": com_id
         content = str(msg_content).split()
         # pprint.pprint(data.json)
 
-        if author_id in report_ids:  # "!report" before
-            try:
-                message = report(content, author_id, com_id, chat_id, msg_time)
-                report_ids.remove(author_id)
-                sub_client.send_message(**kwargs, message='Your message has been sent!')
-                return sub_client.send_message(chatId=REPORT_CHAT, message=message)  # REPORT_CHAT - check db.py
-            except Exception as e: print(e)
-
-        if content[0][0] != '!':
-            return
         if len(content[0]) == 1:  # content == "! sddfh", "! save" etc
             return
-        
+
         content = [content[0][1:]] + content[1:]  # from ['!duel', 'yes'] to ['duel', 'yes']
 
         if content[0].lower() == 'report':
             try:
-                if len(content) == 1:
-                    report_ids.append(author_id)
-                    return sub_client.send_message(**kwargs, message=
-                                                   f'You used a command !report.\n'
-                                                   f'Your next message will be sent to the person who hosts this version of the bot, '
-                                                   f'describe your problem/question.')
                 message = report(content[1:], author_id, com_id, chat_id, msg_time)
-                sub_client.send_message(**kwargs, message='Your message has been sent!')
                 sub_client.send_message(chatId=REPORT_CHAT, message=message)
+                sub_client.send_message(**kwargs, message='Your message has been sent to the person who hosts this version of the bot!')
                 return
             except Exception as e: print(e)
 
@@ -60,54 +47,57 @@ def on_text_message(data):
                                                    '[ci]info\n'
                                                    '[ci]chat\n'
                                                    '[ci]fun\n\n'
-                                                   'send !help {category} for command list.\n'
+                                                   'Send !help {category} for command list.\n'
                                                    'The values in (brackets) are required.\n'
                                                    'The values in [brackets] are optional.\n'
                                                    'GitHub Link - github.com/K1rL3s/aminobot')
                 if content[1].lower() == 'info':
-                    return sub_client.send_message(**kwargs, message=
-                                                   '[bc]Information\n\n'
-                                                   '[ci]!help [category]\n'
-                                                   '[c]Categories - info, chat, fun.\n\n'
-                                                   '[ci]!get (amino-url)\n'
-                                                   '[c]The object id\n\n'
-                                                   '[ci]!report [message]\n'
-                                                   '[c]Send your message to the creator.\n\n'
-                                                   '[ci]!user [user-link]\n'
-                                                   '[c]info about user.\n\n'
-                                                   '[ci]!chat [chat-link]\n'
-                                                   '[c]info about chat.\n\n'
-                                                   '[ci]!com [community-link]\n'
-                                                   '[c]Info about community. (Link - only about open coms)')
+                    sub_client.send_message(**kwargs, message=
+                                            '[bc]Information\n\n'
+                                            '[ci]!help [category]\n'
+                                            '[c]Categories - info, chat, fun.\n\n'
+                                            '[ci]!get (amino-url)\n'
+                                            '[c]The object id\n\n'
+                                            '[ci]!report [message]\n'
+                                            '[c]Send your message to the creator.\n\n'
+                                            '[ci]!user [user-link]\n'
+                                            '[c]info about user.\n\n'
+                                            '[ci]!chat [chat-link]\n'
+                                            '[c]info about chat.\n\n'
+                                            '[ci]!com [community-link]\n'
+                                            '[c]Info about community. (Link - only about open coms)')
+                    return
                 if content[1].lower() == 'chat':
-                    return sub_client.send_message(**kwargs, message=
-                                                   '[bc]Chat management\n\n'
-                                                   '[ci]!save\n'
-                                                   '[c]Saving the title, description, icon and background of the current chat to the database. '
-                                                   '(Available only for Host ans coHosts)\n\n'
-                                                   '[ci]!upload\n'
-                                                   '[c]Set the title, description, icon and background from the last save of the current chat. '
-                                                   '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
-                                                   '[ci]!mention [message]\n'
-                                                   '[c]Mentions all chat members. (Available only to the Host)')
+                    sub_client.send_message(**kwargs, message=
+                                            '[bc]Chat management\n\n'
+                                            '[ci]!save\n'
+                                            '[c]Saving the title, description, icon and background of the current chat to the database. '
+                                            '(Available only for Host ans coHosts)\n\n'
+                                            '[ci]!upload\n'
+                                            '[c]Set the title, description, icon and background from the last save of the current chat. '
+                                            '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
+                                            '[ci]!mention [message]\n'
+                                            '[c]Mentions all chat members. (Available only to the Host)')
+                    return
                 if content[1].lower() == 'fun':
-                    return sub_client.send_message(**kwargs, message=
-                                                   '[BC]Fun\n\n'
-                                                   '[ci]!ping\n'
-                                                   '[c]Reply "pong". Check if the bot is online.\n\n'
-                                                   '[ci]!roll [start] [end] [times]\n'
-                                                   '[c]Random number. The default range is 1 to 100.\n\n'
-                                                   '[ci]!coin\n'
-                                                   '[c]Tails, heads or edge (0.5%).\n\n'
-                                                   '[bc]Duels\n'
-                                                   '[ci]!duel send (@notify)\n'
-                                                   '[c]Sends a duel to whoever is mentioned.\n\n'
-                                                   '[ci]!duel stop\n'
-                                                   '[c]Cancels the current duel, duel sent to you or sent by you.\n\n'
-                                                   '[ci]!duel yes\n'
-                                                   '[c]Accept duel. Chance to shoot first - 50%.\n\n'
-                                                   '[ci]!duel shot\n'
-                                                   '[c]Duel shot. Hit chance - 25%.')
+                    sub_client.send_message(**kwargs, message=
+                                            '[BC]Fun\n\n'
+                                            '[ci]!ping\n'
+                                            '[c]Reply "pong". Check if the bot is online.\n\n'
+                                            '[ci]!roll [start] [end] [times]\n'
+                                            '[c]Random number. The default range is 1 to 100.\n\n'
+                                            '[ci]!coin\n'
+                                            '[c]Tails, heads or edge (0.5%).\n\n'
+                                            '[bc]Duels\n'
+                                            '[ci]!duel send (@notify)\n'
+                                            '[c]Sends a duel to whoever is mentioned.\n\n'
+                                            '[ci]!duel stop\n'
+                                            '[c]Cancels the current duel, duel sent to you or sent by you.\n\n'
+                                            '[ci]!duel yes\n'
+                                            '[c]Accept duel. Chance to shoot first - 50%.\n\n'
+                                            '[ci]!duel shot\n'
+                                            '[c]Duel shot. Hit chance - 25%.')
+                    return
             except Exception as e: print(e)
 
         if content[0].lower() == 'ping':
@@ -119,18 +109,18 @@ def on_text_message(data):
             try:
                 if author_id not in (*chat_info.coHosts, chat_host_id):
                     return sub_client.send_message(**kwargs, message='You are not a Host or coHost.')
-                if save_chat(chat_id):
+                if save_chat(chat_id, sub_client):
                     return sub_client.send_message(**kwargs, message='The title, description, icon and background of the chat have been successfully saved.')
-                return error_message(kwargs)
+                return error_message(kwargs, sub_client)
             except Exception as e: print(e)
 
         if content[0].lower() == 'upload':
             try:
                 if author_id not in (*chat_info.coHosts, chat_host_id):
                     return sub_client.send_message(**kwargs, message='You are not a Host or coHost.')
-                if upload_chat(chat_id):
+                if upload_chat(chat_id, sub_client):
                     return sub_client.send_message(**kwargs, message='The title, description, icon and background of the chat uploaded successfully.')
-                return error_message(kwargs)
+                return error_message(kwargs, sub_client)
             except Exception as e: print(e)
 
         if content[0].lower() == 'get':
@@ -150,7 +140,7 @@ def on_text_message(data):
                     except Exception: author_id = 'None'
                     if author_id == 'None':  # bad link etc
                         return sub_client.send_message(**kwargs, message='Bad argument (link).')
-                try: user_message = func_user_info(author_id)
+                try: user_message = func_user_info(author_id, sub_client)
                 except Exception as error: user_message = None
                 if user_message is None:
                     return sub_client.send_message(**kwargs, message=f"{error}")
@@ -165,7 +155,7 @@ def on_text_message(data):
                     except Exception as e: print(e); chat_id = 'None'
                     if chat_id == 'None':  # bad link etc
                         return sub_client.send_message(**kwargs, message='Bad argument (link).')
-                try: chat_message = func_chat_info(chat_id)
+                try: chat_message = func_chat_info(chat_id, sub_client)
                 except Exception as error: chat_message = None
                 if chat_message is None:
                     return sub_client.send_message(**kwargs, message=f"{error}")
@@ -191,7 +181,7 @@ def on_text_message(data):
             try:
                 if author_id != chat_host_id:
                     return sub_client.send_message(**kwargs, message='You are not a Host.')
-                mention_message, mention_users = mention(content[1:], chat_info)
+                mention_message, mention_users = mention(content[1:], chat_info, sub_client)
                 return sub_client.send_message(**kwargs, message=' '.join(mention_message), mentionUserIds=mention_users)
             except Exception as e: print(e)
 
@@ -216,7 +206,7 @@ def on_text_message(data):
                         first = duels_second_dict[author_id]
                         stop_duel(first, author_id)
                         return sub_client.send_message(**kwargs, message='Your duel request has been cancelled.')
-                    return sub_client.send_message(**kwargs, message='You dont have any request𝐬.')
+                    return sub_client.send_message(**kwargs, message='You dont have any requests.')
 
                 if content[1].lower() == 'send':
                     first = author_id
@@ -229,7 +219,7 @@ def on_text_message(data):
                     duel = Duel(author_id, second, author_name, second_name, chat_id)
                     duels_first_dict[author_id] = tuple([duel, second])
                     duels_second_dict[second] = author_id
-                    return sub_client.send_message(**kwargs, message='Waiting for accept the duel...')
+                    return sub_client.send_message(**kwargs, message=f'Waiting for accept the duel by {second_name}...')
 
                 if content[1].lower() == 'yes':
                     second = author_id
@@ -239,9 +229,9 @@ def on_text_message(data):
                         return sub_client.send_message(**kwargs, message='You already have a duel request.')
                     duel = duels_first_dict[duels_second_dict[second]][0]
                     duel.start_duel()
-                    sub_client.send_message(chatId=chat_id, message=f'The duel between <${duel.first_name}$> abd <${duel.second_name}$> begins!\n'
-                                                                    f'(!duel shot, <${duel.who_start_name}$> starts)',
-                                            mentionUserIds=[duel.first, duel.second, duel.who_start_id])
+                    sub_client.send_message(chatId=chat_id, mentionUserIds=[duel.first, duel.second, duel.who_start_id], message=
+                                            f'The duel between <${duel.first_name}$> abd <${duel.second_name}$> begins!\n'
+                                            f'(!duel shot, <${duel.who_start_name}$> starts)')
                     return
 
                 if content[1].lower() == 'shot':
@@ -258,9 +248,9 @@ def on_text_message(data):
                                                                          f'Shots: {duel.shots}')
                     if message == 'win':
                         name = duel.first_name if author_id == duel.first else duel.second_name
-                        sub_client.send_message(**kwargs, message=f'Hit! <${name}$> won this duel!\n'
-                                                                  f'Total shots: {duel.shots}',
-                                                mentionUserIds=[author_id])
+                        sub_client.send_message(**kwargs, mentionUserIds=[author_id], message=
+                                                f'Hit! <${name}$> won this duel!\n'
+                                                f'Total shots: {duel.shots}')
                         stop_duel(duel.first, duel.second)
                         return
             except Exception as e: print(e)
@@ -290,13 +280,21 @@ def on_text_message(data):
                 return
             except Exception as e: print(e)
 
-        try: return sub_client.send_message(**kwargs, message=
-                                            'Command failed.\n'
-                                            'Possible reasons:\n'
-                                            '1. The bot has no rights to do this.\n'
-                                            '2. Invalid command.\n'
-                                            '3. Invalid arguments.\n'
-                                            '4. Contact the creator on github.')
+        if content[0].lower() == 'follow':
+            try:
+                sub_client.follow(userId=author_id)
+                return sub_client.send_message(**kwargs, message='Successful subscription!')
+            except Exception as e: print(e)
+
+        try:
+            sub_client.send_message(**kwargs, message=
+                                    'Command failed.\n'
+                                    'Possible reasons:\n'
+                                    '1. The bot has no rights to do this.\n'
+                                    '2. Invalid command.\n'
+                                    '3. Invalid arguments.\n'
+                                    '4. Contact the creator on github.')
+            return
         except Exception as e: print(e)
-          
+
     except Exception as e: print(e)

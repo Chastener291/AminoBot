@@ -6,13 +6,11 @@ from db import *
 
 client = amino.Client()
 client.login(email=EMAIL, password=PASSWORD)  # check db.py
-sub_client = amino.SubClient(comId=CID, profile=client.profile)
 
 
 duels_first_dict = dict()  # userId who invited : Duel Object
 duels_second_dict = dict()  # userId who was invited : userId who invited
 duels_started = dict()   # userIds who is currently dueling : Duel Object
-report_ids = list()  # userIds who send !report without text
 
 
 class Duel:
@@ -58,8 +56,8 @@ def stop_duel(first, second):
     except Exception: pass
 
 
-def console_log(msg_time, chat_name, author_name, msg_content):
-    print(f'{msg_time.split("T")[1][:-1]}  |  {chat_name}  |  {author_name}:  {msg_content}')
+# def console_log(msg_time, chat_name, author_name, msg_content):
+#     print(f'{msg_time.split("T")[1][:-1]}  |  {chat_name}  |  {author_name}:  {msg_content}')
 
 
 def id_from_url(url):
@@ -85,14 +83,14 @@ def url_from_id(objectId: str, objectType: int, comId=None):
     return shortUrl
 
 
-def save_chat(chat_id: str):  # Save chat info in database.db
+def save_chat(chat_id, sub_client):  # Save chat info in database.db
     chat = sub_client.get_chat_thread(chat_id)
     chat_id, chat_name, chat_icon, chat_bg, chat_desc = chat.chatId, chat.title, chat.icon, chat.backgroundImage, chat.content
     if save_chat_in_db(chat_id, chat_name, chat_icon, chat_bg, chat_desc): return True
     return False
 
 
-def upload_chat(chat_id: str):
+def upload_chat(chat_id, sub_client):
     materials = return_chat_info_from_db(chat_id)
     if materials is None: return False
     title, icon, bg, desc = materials[1:]
@@ -102,11 +100,11 @@ def upload_chat(chat_id: str):
     return True
 
 
-def error_message(kwargs):
+def error_message(kwargs, sub_client):
     sub_client.send_message(**kwargs, message='The command failed, an error occurred. Contact the creator on github or person who hosts the bot for help.')
 
 
-def func_user_info(user_id: str):  # for other info check info_user.json or objects.py
+def func_user_info(user_id, sub_client):  # for other info check info_user.json or objects.py
     info_user_com = sub_client.get_user_info(userId=user_id)
     info_user_amino = client.get_user_info(userId=user_id)
     try: user_name = 'No info' if info_user_com.nickname is None else info_user_com.nickname
@@ -115,7 +113,7 @@ def func_user_info(user_id: str):  # for other info check info_user.json or obje
     except Exception: user_global_url = 'No info'
     try: user_created = 'No info' if info_user_amino.createdTime is None else ' '.join(info_user_amino.createdTime[:-1].split('T'))
     except Exception: user_created = 'No info'
-    try : user_join_com = 'No info' if info_user_com.createdTime is None else ' '.join(info_user_com.createdTime[:-1].split('T'))
+    try: user_join_com = 'No info' if info_user_com.createdTime is None else ' '.join(info_user_com.createdTime[:-1].split('T'))
     except Exception: user_join_com = 'No info'
     try: user_modified = 'No info' if info_user_com.modifiedTime is None else ' '.join(info_user_com.modifiedTime[:-1].split('T'))
     except Exception: user_modified = 'No info'
@@ -159,7 +157,7 @@ def func_user_info(user_id: str):  # for other info check info_user.json or obje
     return user_message
 
 
-def func_chat_info(chat_id: str):
+def func_chat_info(chat_id, sub_client):
     info_chat = sub_client.get_chat_thread(chatId=chat_id)
     try: chat_title = 'No info' if info_chat.title is None else info_chat.title
     except Exception: chat_title = 'No info'
@@ -192,7 +190,7 @@ def func_chat_info(chat_id: str):
     chat_message = '\n'.join([
         f'Chat title: {chat_title}',
         f'Link: {chat_url}',
-        f"Chat'𝐬 host: {chat_host_com_url}, {chat_host_global_url}",
+        f"Chat's host: {chat_host_com_url}, {chat_host_global_url}",
         f'Chat created: {chat_created}',
         f'Chat lang: {chat_language}',
         f'Members: {chat_users}',
@@ -206,7 +204,7 @@ def func_chat_info(chat_id: str):
     return chat_message
 
 
-def func_com_info(com_id: str):
+def func_com_info(com_id):
     if int(com_id) not in list(client.sub_clients(start=0, size=100).comId):
         client.join_community(comId=com_id)
     info_com = client.get_community_info(com_id)
@@ -271,7 +269,7 @@ def func_com_info(com_id: str):
     return com_message
 
 
-def mention(message: str, chat_info):
+def mention(message, chat_info, sub_client):
     chat_id = chat_info.chatId
     if not message: message = 'Notify!\n'
     else: message = ' '.join(message) + '\n'
