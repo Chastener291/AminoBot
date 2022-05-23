@@ -224,7 +224,7 @@ def on_text_message(data):
                 if content[1].lower() == 'yes':
                     second = author_id
                     if second not in duels_second_dict.keys():
-                        return sub_client.send_message(**kwargs, message='You dont have any request𝐬.')
+                        return sub_client.send_message(**kwargs, message='You dont have any requests.')
                     if second in duels_first_dict.keys():
                         return sub_client.send_message(**kwargs, message='You already have a duel request.')
                     duel = duels_first_dict[duels_second_dict[second]][0]
