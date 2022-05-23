@@ -12,7 +12,7 @@ client.login(email=email, password=password)
 chatlink = input('Chat link (for READ_CHATS) >>> ')
 print(f'{client.get_from_code(code=chatlink).objectId} - paste it in READ_CHATS in db.py')
 reportlink = input('Chat link where bot will send reports >>> ')
-print(f"'{client.get_from_code(code=reportlink).objectId}' - paste it in READ_CHATS in db.py\n")
+print(f"'{client.get_from_code(code=reportlink).objectId}' - paste it in REPORT_CHAT in db.py\n")
 print("if you want send report to the dm or private chat, use it:\n\n"
       "import aminofix as amino\n"
       "client = amino.Client()\n"
