@@ -1,0 +1,25 @@
+info:
+help
+get
+chatimages
+report
+user
+chat
+com
+
+chat:
+save
+upload
+mention
+
+fun:
+ping
+roll
+coin
+rollow
+kickorg
+    duel:
+    duel send
+    duel stop 
+    duel yes
+    duel shot 
