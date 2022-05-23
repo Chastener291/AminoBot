@@ -35,8 +35,10 @@ def on_text_message(data):
             return
         if len(content[0]) == 1:  # content == "! sddfh", "! save" etc
             return
+        
+        content = [content[0][1:]] + content[1:]  # from ['!duel', 'yes'] to ['duel', 'yes']
 
-        if content[0][1:].lower() == 'report':
+        if content[0].lower() == 'report':
             try:
                 if len(content) == 1:
                     report_ids.append(author_id)
@@ -50,7 +52,7 @@ def on_text_message(data):
                 return
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'help':
+        if content[0].lower() == 'help':
             try:
                 if len(content) == 1:
                     return sub_client.send_message(**kwargs, message=
@@ -108,12 +110,12 @@ def on_text_message(data):
                                                    '[c]Duel shot. Hit chance - 25%.')
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'ping':
+        if content[0].lower() == 'ping':
             try:
                 return sub_client.send_message(**kwargs, message=f"<$pong$>", mentionUserIds=[author_id])
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'save':
+        if content[0].lower() == 'save':
             try:
                 if author_id not in (*chat_info.coHosts, chat_host_id):
                     return sub_client.send_message(**kwargs, message='You are not a Host or coHost.')
@@ -122,7 +124,7 @@ def on_text_message(data):
                 return error_message(kwargs)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'upload':
+        if content[0].lower() == 'upload':
             try:
                 if author_id not in (*chat_info.coHosts, chat_host_id):
                     return sub_client.send_message(**kwargs, message='You are not a Host or coHost.')
@@ -131,7 +133,7 @@ def on_text_message(data):
                 return error_message(kwargs)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'get':
+        if content[0].lower() == 'get':
             try:
                 try: url_id = str(id_from_url(content[1]))
                 except Exception: url_id = 'None'
@@ -140,7 +142,7 @@ def on_text_message(data):
                 return sub_client.send_message(**kwargs, message=url_id)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'user':
+        if content[0].lower() == 'user':
             try:
                 error = 'Bad argument (link).'
                 if len(content) != 1:  # for call with link
@@ -155,7 +157,7 @@ def on_text_message(data):
                 return sub_client.send_message(**kwargs, message=user_message)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'chat':
+        if content[0].lower() == 'chat':
             try:
                 error = 'Bad argument (link).'
                 if len(content) != 1:  # for call with link
@@ -170,7 +172,7 @@ def on_text_message(data):
                 return sub_client.send_message(**kwargs, message=chat_message)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'com':
+        if content[0].lower() == 'com':
             try:
                 error = 'Bad argument (link).'
                 if len(content) != 1:  # for call with link
@@ -185,7 +187,7 @@ def on_text_message(data):
                 return sub_client.send_message(**kwargs, message=com_message)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'mention':
+        if content[0].lower() == 'mention':
             try:
                 if author_id != chat_host_id:
                     return sub_client.send_message(**kwargs, message='You are not a Host.')
@@ -193,17 +195,17 @@ def on_text_message(data):
                 return sub_client.send_message(**kwargs, message=' '.join(mention_message), mentionUserIds=mention_users)
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'coin':
+        if content[0].lower() == 'coin':
             try:
                 return sub_client.send_message(**kwargs, message=f'Tossing a coin...\nIt is {coin()}!')
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'roll':
+        if content[0].lower() == 'roll':
             try:
                 return sub_client.send_message(**kwargs, message=roll(content))
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'duel':
+        if content[0].lower() == 'duel':
             try:
                 if content[1].lower() == 'stop':
                     if author_id in duels_first_dict.keys():
@@ -263,7 +265,7 @@ def on_text_message(data):
                         return
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'kickorg':  # like a prank
+        if content[0].lower() == 'kickorg':  # like a prank
             try:
                 sub_client.send_message(**kwargs, mentionUserIds=[author_id], message=
                                         f'Starting host transfer ro <${author_name}$>...')
@@ -278,7 +280,7 @@ def on_text_message(data):
                 return
             except Exception as e: print(e)
 
-        if content[0][1:].lower() == 'chatimages':
+        if content[0].lower() == 'chatimages':
             try:
                 chat_icon = chat_info.icon
                 chat_bg = chat_info.backgroundImage
