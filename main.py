@@ -309,8 +309,6 @@ def on_text_message(data):
                     return sub_client.send_message(**kwargs, message='Some error. Cannot join community.')
             except Exception as e: print(e)
         
-        
-        
          if content[0] == 'joinchat':
             try:
                 try: chat_from_code = client.get_from_code(content[1])
