@@ -64,8 +64,7 @@ def id_from_url(url):
     url = url[:-1] if url[-1] == '/' else url
     try:
         var = client.get_from_code(url)
-        if var.objectId is not None: return var.objectId
-        else: return var.json['extensions']['community']['ndcId']
+        return var.objectId if var.objectId is not None else var.comId
     except Exception: return 'None'
 
 
