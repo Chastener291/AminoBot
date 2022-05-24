@@ -3,7 +3,6 @@ import sqlite3
 
 EMAIL = 'youremail'  # paste your email
 PASSWORD = 'yourpass'  # paste your password
-READCHATS = ('chatId', 'chatId')  # paste the chat ids where the bot will work
 REPORT_CHAT = 'chatId'  # paste the chat id where the bot will send reports
 
 
