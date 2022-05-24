@@ -8,12 +8,12 @@ com
 save
 upload
 mention
+joincom
+joinchat
 ping
 roll
 coin
 follow
-joinchat
-joincom
 kickorg
 duel:
     duel send
