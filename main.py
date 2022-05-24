@@ -1,12 +1,24 @@
 from main_funcs import *
 
 
+@client.event("on_chat_invite")
+def on_chat_invite(data):
+    try:
+        chat_id = data.json['chatMessage']['threadId']
+        com_id = str(data.json['ndcId'])
+        sub_client = amino.SubClient(comId=com_id, profile=client.profile)
+        sub_client.join_chat(chat_id)
+        sub_client.send_message(chatId=chat_id, message=
+                                '[c]Hello <3\n'
+                                'Use !help for command list.')
+        return
+    except Exception as e: print(e)
+
+
 @client.event("on_text_message")
 def on_text_message(data):
     try:
         if data.json['chatMessage']['content'][0] != '!': return
-        # uncommnet next string (9) to check only readchats (check db.py)
-        # if data.json['chatMessage']['threadId'] not in READCHATS: return  # READCHATS - check db.py
         # Data processing
         sub_client = amino.SubClient(comId=str(data.json['ndcId']), profile=client.profile)
         chat_id = data.json['chatMessage']['threadId']
