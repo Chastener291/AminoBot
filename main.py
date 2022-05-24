@@ -91,7 +91,11 @@ def on_text_message(data):
                                             '[c]Set the title, description, icon and background from the last save of the current chat. '
                                             '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
                                             '[ci]!mention [message]\n'
-                                            '[c]Mentions all chat members. (Available only to the Host)')
+                                            '[c]Mentions all chat members. (Available only to the Host)\n\n'
+                                            '[ci]!joincom (community-link)\n'
+                                            '[c]Joins the community.\n\n'
+                                            '[ci]!joinchat (chat-link)\n'
+                                            '[c]Joins the chat.')
                     return
                 if content[1].lower() == 'fun':
                     sub_client.send_message(**kwargs, message=
