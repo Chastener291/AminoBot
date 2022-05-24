@@ -291,6 +291,49 @@ def on_text_message(data):
                 sub_client.follow(userId=author_id)
                 return sub_client.send_message(**kwargs, message='Successful subscription!')
             except Exception as e: print(e)
+       
+         if content[0] == 'joincom':
+            try:
+                try: com_from_code = client.get_from_code(content[1])
+                except Exception:
+                    return sub_client.send_message(**kwargs, message=
+                                                   'Cannot get a FromCode object.\n'
+                                                   'Probably bad link etc.')
+                com_id_to_join = com_from_code.comId
+                if com_id_to_join in client.sub_clients(start=0, size=100).comId:
+                    return sub_client.send_message(**kwargs, message='Im already in this community.')
+                try:
+                    client.join_community(comId=com_id_to_join)
+                    sub_client.send_message(**kwargs, message='Joined the community.')
+                except Exception:
+                    return sub_client.send_message(**kwargs, message='Some error. Cannot join community.')
+            except Exception as e: print(e)
+        
+        
+        
+         if content[0] == 'joinchat':
+            try:
+                try: chat_from_code = client.get_from_code(content[1])
+                except Exception:
+                    return sub_client.send_message(**kwargs, message=
+                                                   'Cannot get a FromCode object.\n'
+                                                   'Probably bad link etc.')
+                chat_id_to_join = chat_from_code.objectId
+                com_id_to_join = chat_from_code.comId
+                if com_id_to_join not in client.sub_clients(start=0, size=100).comId:
+                    try:
+                        client.join_community(comId=com_id_to_join)
+                        sub_client.send_message(**kwargs, message='Joined the community...')
+                    except Exception:
+                        return sub_client.send_message(**kwargs, message='Cannot join community.')
+
+                sub_client_to_join = amino.SubClient(comId=com_id_to_join, profile=client.profile)
+                try:
+                    sub_client_to_join.join_chat(chatId=chat_id_to_join)
+                    return sub_client.send_message(**kwargs, message='Joined the chat!')
+                except Exception:
+                    return sub_client.send_message(**kwargs, message='Cannot join chat.')
+            except Exception as e: print(e)
 
         try:
             sub_client.send_message(**kwargs, message=
