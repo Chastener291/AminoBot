@@ -1,4 +1,3 @@
-info:
 help
 get
 chatimages
@@ -6,19 +5,17 @@ report
 user
 chat
 com
-
-chat:
 save
 upload
 mention
-
-fun:
 ping
 roll
 coin
-rollow
+follow
+joinchat
+joincom
 kickorg
-    duel:
+duel:
     duel send
     duel stop 
     duel yes
