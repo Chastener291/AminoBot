@@ -310,3 +310,23 @@ def report(content, user_id, com_id, chat_id, msg_time):
     except Exception: chat_link = '-'
     message = f'Report from {user_link}\nChat: {chat_link}\nUTC Time: {" ".join(msg_time[:-1].split("T"))}\nMessage: {" ".join(content)}'
     return message
+
+
+def get_chat_lurkers(self: amino.SubClient, start: int = 0, size: int = 100):  # big thanks to vedansh#4039
+    # dont import requests and json bcoz it is import in aminofix __init__
+    response = amino.get(f"{self.api}/x{self.comId}/s/live-layer/public-chats?start={start}&size={size}", headers=self.parse_headers(), proxies=self.proxies, verify=self.certificatePath)
+    return amino.loads(response.text)
+
+
+
+def lurk_list(self: amino.SubClient, chatId: str):  # big thanks to vedansh#4039
+    try:
+        chat_info = get_chat_lurkers(self)
+        chat_info = chat_info['userInfoInThread'][chatId]
+        names = [name['nickname'] for name in chat_info['userProfileList']]
+        count = chat_info['userProfileCount']
+        message = [f'[bc]Lurkers: {count}\n\n'] + [f'{name}\n' for name in names]
+        return ''.join(message)
+    except Exception:
+        return 'Chat too dead, no lurkers, bruh.'
+
