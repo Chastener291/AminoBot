@@ -316,7 +316,7 @@ def on_text_message(data):
                                                    'Cannot get a FromCode object.\n'
                                                    'Probably bad link etc.')
                 com_id_to_join = com_from_code.comId
-                if com_id_to_join in client.sub_clients(start=0, size=100).comId:
+                if com_id_to_join in client.sub_clients(start=0, size=100).comId:  # more than 100?
                     return sub_client.send_message(**kwargs, message='Im already in this community.')
                 try:
                     client.join_community(comId=com_id_to_join)
@@ -347,6 +347,12 @@ def on_text_message(data):
                     return sub_client.send_message(**kwargs, message='Joined the chat!')
                 except Exception:
                     return sub_client.send_message(**kwargs, message='Cannot join chat.')
+            except Exception as e: print(e)
+                
+        if content[0] == 'lurkers':
+            try:
+                message = lurk_list(sub_client, chat_id)
+                return sub_client.send_message(**kwargs, message=message)
             except Exception as e: print(e)
 
         try:
