@@ -274,7 +274,7 @@ def mention(message, chat_info, sub_client):
     else: message = ' '.join(message) + '\n'
     chat_members = chat_info.membersCount - (chat_info.membersCount % 100 - 1)
     mention_ids = []
-    for i in range(0, chat_members):
+    for i in range(0, chat_members, 100):
         mention_ids.extend(sub_client.get_chat_users(chatId=chat_id, start=i, size=100).userId)
     message_mention = [message] + [f'<${i}$>' for i in range(chat_info.membersCount)]
     return message_mention, mention_ids
