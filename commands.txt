@@ -8,6 +8,7 @@ com
 save
 upload
 mention
+lurkers
 joincom
 joinchat
 ping
