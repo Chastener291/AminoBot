@@ -390,6 +390,20 @@ def on_text_message(data):
                 message = f'[ic]{translated_text}\n\n[c]Translated from {detected_result}.'
                 return sub_client.send_message(chatId=chat_id, replyTo=reply_id, message=message)
             except Exception as e: print('error', e)
+        
+        if content[0].lower() == 'block':
+            try:
+                command = content[1]
+                if block_command(chat_id, command):
+                    return sub_client.send_message(**kwargs, message=f'Command {command} blocked!')
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'allow':
+            try:
+                command = content[1]
+                if allow_command(chat_id, command):
+                    return sub_client.send_message(**kwargs, message=f'Command {command} allowed!')
+            except Exception as e: print(e)
 
         try:
             sub_client.send_message(**kwargs, message=
