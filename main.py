@@ -42,7 +42,10 @@ def on_text_message(data):
             return
 
         content = [content[0][1:]] + content[1:]  # from ['!duel', 'yes'] to ['duel', 'yes']
-
+        
+        if content[0].lower() in blocked_commands(chat_id):
+            return sub_client.send_message(**kwargs, message='This command is blocked here.')
+        
         if content[0].lower() == 'report':
             try:
                 message = report(content[1:], author_id, com_id, chat_id, msg_time)
