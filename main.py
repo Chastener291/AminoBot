@@ -368,11 +368,26 @@ def on_text_message(data):
                     return sub_client.send_message(**kwargs, message='Cannot join chat.')
             except Exception as e: print(e)
                 
-        if content[0] == 'lurk':
+        if content[0] == 'lurk':  # thanks vedansh#4039
             try:
                 message = lurk_list(sub_client, chat_id)
                 return sub_client.send_message(**kwargs, message=message)
             except Exception as e: print(e)
+        
+        if content[0].lower() == 'tr':  # thanks vedansh#4039
+            try:
+                try:
+                    reply_content = data.json['chatMessage']['extensions']['replyMessage']['content']
+                    reply_id = data.json['chatMessage']['extensions']['replyMessage']['messageId']
+                except KeyError:
+                    reply_content = ' '.join(content[1:])
+                    reply_id = msg_id
+                translator = google_translator()
+                translated_text = translator.translate(reply_content)
+                detected_result = translator.detect(reply_content)[1]  # ['ru', 'russian']
+                message = f'[ic]{translated_text}\n\n[c]Translated from {detected_result}.'
+                return sub_client.send_message(chatId=chat_id, replyTo=reply_id, message=message)
+            except Exception as e: print('error', e)
 
         try:
             sub_client.send_message(**kwargs, message=
