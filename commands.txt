@@ -13,6 +13,8 @@ com
 save
 upload
 mention
+block
+allow
 
 ping
 roll
