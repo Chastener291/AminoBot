@@ -111,6 +111,8 @@ def on_text_message(data):
                                         '[c]Tails, heads or edge (0.5%).\n\n'
                                         '[ci]!kickorg\n'
                                         "[c]Prank the chat's Host :).\n\n"
+                                        '[ci]!lurk\n'
+                                        '[c]How many users are watching the chat.\n\n'
                                         '[bc]Duels\n'
                                         '[ci]!duel send (@notify)\n'
                                         '[c]Sends a duel to whoever is mentioned.\n\n'
@@ -366,7 +368,7 @@ def on_text_message(data):
                     return sub_client.send_message(**kwargs, message='Cannot join chat.')
             except Exception as e: print(e)
                 
-        if content[0] == 'lurkers':
+        if content[0] == 'lurk':
             try:
                 message = lurk_list(sub_client, chat_id)
                 return sub_client.send_message(**kwargs, message=message)
