@@ -113,6 +113,8 @@ def on_text_message(data):
                                         "[c]Prank the chat's Host :).\n\n"
                                         '[ci]!lurk\n'
                                         '[c]How many users are watching the chat.\n\n'
+                                        '[ci]!tr (reply)/(text)\n'
+                                        '[c]Translate reply message or your message.\n\n'
                                         '[bc]Duels\n'
                                         '[ci]!duel send (@notify)\n'
                                         '[c]Sends a duel to whoever is mentioned.\n\n'
