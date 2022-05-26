@@ -305,6 +305,7 @@ def roll(content: str):
 
 
 def report(content, user_id, com_id, chat_id, msg_time):
+    if len(content) == 0: raise Exception  # just '!report'
     try: user_link = client.get_from_id(user_id, 0, comId=com_id).shortUrl
     except Exception: user_link = '-'
     try: chat_link = client.get_from_id(chat_id, 12, comId=com_id).shortUrl
