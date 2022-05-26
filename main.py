@@ -53,73 +53,91 @@ def on_text_message(data):
 
         if content[0].lower() == 'help':
             try:
-                if len(content) == 1:
-                    return sub_client.send_message(**kwargs, message=
-                                                   '[b]Command categories:\n\n'
-                                                   '[ci]info\n'
-                                                   '[ci]chat\n'
-                                                   '[ci]fun\n\n'
-                                                   'Send !help {category} for command list.\n'
-                                                   'The values in (brackets) are required.\n'
-                                                   'The values in [brackets] are optional.\n'
-                                                   'GitHub Link - github.com/K1rL3s/aminobot')
-                if content[1].lower() == 'info':
-                    sub_client.send_message(**kwargs, message=
-                                            '[bc]Information\n\n'
-                                            '[ci]!help [category]\n'
-                                            '[c]Categories - info, chat, fun.\n\n'
-                                            '[ci]!get (amino-url)\n'
-                                            '[c]The object id\n\n'
-                                            '[ci]!chatimages\n'
-                                            '[c]The сhat background and icon.\n\n'
-                                            '[ci]!report [message]\n'
-                                            '[c]Send your message to the creator.\n\n'
-                                            '[ci]!user [user-link]\n'
-                                            '[c]info about user.\n\n'
-                                            '[ci]!chat [chat-link]\n'
-                                            '[c]info about chat.\n\n'
-                                            '[ci]!com [community-link]\n'
-                                            '[c]Info about community. (Link - only about open coms)')
-                    return
-                if content[1].lower() == 'chat':
-                    sub_client.send_message(**kwargs, message=
-                                            '[bc]Chat management\n\n'
-                                            '[ci]!save\n'
-                                            '[c]Saving the title, description, icon and background of the current chat to the database. '
-                                            '(Available only for Host ans coHosts)\n\n'
-                                            '[ci]!upload\n'
-                                            '[c]Set the title, description, icon and background from the last save of the current chat. '
-                                            '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
-                                            '[ci]!mention [message]\n'
-                                            '[c]Mentions all chat members. (Available only to the Host)\n\n'
-                                            '[ci]!joincom (community-link)\n'
-                                            '[c]Joins the community.\n\n'
-                                            '[ci]!joinchat (chat-link)\n'
-                                            '[c]Joins the chat.')
-                    return
-                if content[1].lower() == 'fun':
-                    sub_client.send_message(**kwargs, message=
-                                            '[BC]Fun\n\n'
-                                            '[ci]!ping\n'
-                                            '[c]Reply "pong". Check if the bot is online.\n\n'
-                                            '[ci]!roll [start] [end] [times]\n'
-                                            '[c]Random number. The default range is 1 to 100.\n\n'
-                                            '[ci]!coin\n'
-                                            '[c]Tails, heads or edge (0.5%).\n\n'
-                                            '[ci]!follow\n'
-                                            '[c]Subscribe to you <3.\n\n'
-                                            '[ci]!kickorg\n'
-                                            "[c]Prank the chat's Host :).\n\n"
-                                            '[bc]Duels\n'
-                                            '[ci]!duel send (@notify)\n'
-                                            '[c]Sends a duel to whoever is mentioned.\n\n'
-                                            '[ci]!duel stop\n'
-                                            '[c]Cancels the current duel, duel sent to you or sent by you.\n\n'
-                                            '[ci]!duel yes\n'
-                                            '[c]Accept duel. Chance to shoot first - 50%.\n\n'
-                                            '[ci]!duel shot\n'
-                                            '[c]Duel shot. Hit chance - 25%.')
-                    return
+                sub_client.send_message(**kwargs, message=
+                                        '[b]Command categories:\n\n'
+                                        '[ci]info\n'
+                                        '[ci]chatmanage\n'
+                                        '[ci]fun\n'
+                                        '[ci]bot\n\n'
+                                        'Send !{category} for command list.\n'
+                                        'The values in (brackets) are required.\n'
+                                        'The values in [brackets] are optional.\n'
+                                        '[i]Not case-sensitive.\n'
+                                        'GitHub Link - github.com/K1rL3s/aminobot')
+                return
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'info':
+            try:
+                sub_client.send_message(**kwargs, message=
+                                        '[bc]Information\n\n'
+                                        '[ci]!get (amino-url)\n'
+                                        '[c]The object id\n\n'
+                                        '[ci]!chatimages\n'
+                                        "[c]The сhat's background and icon.\n\n"
+                                        '[ci]!user [user-link]\n'
+                                        '[c]info about user.\n\n'
+                                        '[ci]!chat [chat-link]\n'
+                                        '[c]info about chat.\n\n'
+                                        '[ci]!com [community-link]\n'
+                                        '[c]Info about community. (Link - only about open coms)')
+                return
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'chatmanage':
+            try:
+                sub_client.send_message(**kwargs, message=
+                                        '[bc]Chat management\n\n'
+                                        '[ci]!save\n'
+                                        '[c]Saving the title, description, icon and background of the current chat to the database. '
+                                        '(Available only for Host ans coHosts)\n\n'
+                                        '[ci]!upload\n'
+                                        '[c]Set the title, description, icon and background from the last save of the current chat. '
+                                        '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
+                                        '[ci]!mention [message]\n'
+                                        '[c]Mentions all chat members. (Available only to the Host)')
+                return
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'fun':
+            try:
+                sub_client.send_message(**kwargs, message=
+                                        '[BC]Fun\n\n'
+                                        '[ci]!ping\n'
+                                        '[c]Reply "pong". Check if the bot is online.\n\n'
+                                        '[ci]!roll [start] [end] [times]\n'
+                                        '[c]Random number. The default range is 1 to 100.\n\n'
+                                        '[ci]!coin\n'
+                                        '[c]Tails, heads or edge (0.5%).\n\n'
+                                        '[ci]!kickorg\n'
+                                        "[c]Prank the chat's Host :).\n\n"
+                                        '[bc]Duels\n'
+                                        '[ci]!duel send (@notify)\n'
+                                        '[c]Sends a duel to whoever is mentioned.\n\n'
+                                        '[ci]!duel stop\n'
+                                        '[c]Cancels the current duel, duel sent to you or sent by you.\n\n'
+                                        '[ci]!duel yes\n'
+                                        '[c]Accept duel. Chance to shoot first - 50%.\n\n'
+                                        '[ci]!duel shot\n'
+                                        '[c]Duel shot. Hit chance - 25%.')
+                return
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'bot':
+            try:
+                sub_client.send_message(**kwargs, message=
+                                        '[bc]Bot\n\n'
+                                        '[ci]!help\n'
+                                        '[c]The help message.\n\n'
+                                        '[ci]!report (message)\n'
+                                        '[c]Send your message to the creator.\n\n'
+                                        '[ci]!follow\n'
+                                        '[c]Subscribe to you <3.\n\n'
+                                        '[ci]!joincom (community-link)\n'
+                                        '[c]Joins the community.\n\n'
+                                        '[ci]!joinchat (chat-link)\n'
+                                        '[c]Joins the chat.')
+                return
             except Exception as e: print(e)
 
         if content[0].lower() == 'ping':
