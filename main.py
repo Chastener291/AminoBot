@@ -287,8 +287,7 @@ def on_text_message(data):
                 # The author doesnt know this system message in english language. Use translation to correct it
                 time.sleep(3)  # ???
                 sub_client.send_message(chatId=chat_id, messageType=107, message=
-                                        f'{chat_host_name} покинул(а) разговор.')
-                # The author doesnt know this system message in english language. Use translation to correct it
+                                        f'{chat_host_name} has left the conversation.')
                 return
             except Exception as e: print(e)
 
