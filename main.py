@@ -95,7 +95,11 @@ def on_text_message(data):
                                         '[c]Set the title, description, icon and background from the last save of the current chat. '
                                         '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
                                         '[ci]!mention [message]\n'
-                                        '[c]Mentions all chat members. (Available only to the Host)')
+                                        '[c]Mentions all chat members. (Available only to the Host)\n\n'
+                                        '[ci]!block (command)\n'
+                                        '[c]Blocks a command in chat. (Available only for Host ans coHosts)\n\n'
+                                        '[ci]!allow (command)\n'
+                                        '[c]Allow a command in chat. (Available only for Host ans coHosts)')
                 return
             except Exception as e: print(e)
 
@@ -393,6 +397,8 @@ def on_text_message(data):
         
         if content[0].lower() == 'block':
             try:
+                if author_id not in (*chat_info.coHosts, chat_host_id):
+                    return sub_client.send_message(**kwargs, message='You are not a Host or coHost.')
                 command = content[1]
                 if block_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} blocked!')
@@ -400,6 +406,8 @@ def on_text_message(data):
 
         if content[0].lower() == 'allow':
             try:
+                if author_id not in (*chat_info.coHosts, chat_host_id):
+                    return sub_client.send_message(**kwargs, message='You are not a Host or coHost.')
                 command = content[1]
                 if allow_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} allowed!')
