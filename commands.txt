@@ -1,23 +1,30 @@
 help
+info
+chatmanage
+fun
+bot
+
 get
 chatimages
-report
 user
 chat
 com
+
 save
 upload
 mention
-lurkers
-joincom
-joinchat
+
 ping
 roll
 coin
-follow
 kickorg
-duel:
-    duel send
-    duel stop 
-    duel yes
-    duel shot 
+lurk
+duel send
+duel stop
+duel yes
+duel shot
+
+report
+follow
+joincom
+joinchat
