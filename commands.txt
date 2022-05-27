@@ -15,6 +15,7 @@ upload
 mention
 block
 allow
+blockedlist
 
 ping
 roll
