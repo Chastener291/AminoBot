@@ -21,6 +21,8 @@ roll
 coin
 kickorg
 lurk
+tr
+fancy
 duel send
 duel stop
 duel yes
