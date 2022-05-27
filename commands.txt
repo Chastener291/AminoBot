@@ -28,5 +28,6 @@ duel shot
 
 report
 follow
+msg
 joincom
 joinchat
