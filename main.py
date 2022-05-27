@@ -40,7 +40,10 @@ def on_text_message(data):
 
         if len(content[0]) == 1:  # content == "! sddfh", "! save" etc
             return
-
+        
+        if author_id == client.userId:  # it was a very big exploit
+            return
+        
         content = [content[0][1:]] + content[1:]  # from ['!duel', 'yes'] to ['duel', 'yes']
         
         if content[0].lower() in blocked_commands(chat_id):
