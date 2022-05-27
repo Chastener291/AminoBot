@@ -20,7 +20,6 @@ def on_text_message(data):
     try:
         if data.json['chatMessage']['content'][0] != '!': return
         # Data processing
-        sub_client = amino.SubClient(comId=str(data.json['ndcId']), profile=client.profile)
         chat_id = data.json['chatMessage']['threadId']
         chat_info = sub_client.get_chat_thread(chat_id)
         chat_host_id = chat_info.json['author']['uid']
@@ -40,7 +39,9 @@ def on_text_message(data):
 
         if len(content[0]) == 1:  # content == "! sddfh", "! save" etc
             return
-
+        
+        sub_client = amino.SubClient(comId=str(data.json['ndcId']), profile=client.profile)
+        
         content = [content[0][1:]] + content[1:]  # from ['!duel', 'yes'] to ['duel', 'yes']
         
         if content[0].lower() in blocked_commands(chat_id):
