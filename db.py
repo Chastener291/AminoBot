@@ -30,6 +30,7 @@ def return_chat_info_from_db(chat_id):
 def blocked_commands(chat_id):
     with sqlite3.connect('database.db', check_same_thread=False) as db:
         sql = db.cursor()
+        if chat_id not in [i[0] for i in sql.execute("SELECT chat_id FROM commands")]: return ''
         commands = sql.execute(f"SELECT command FROM commands WHERE chat_id = '{chat_id}'").fetchone()[0]
         return commands.strip()
 
