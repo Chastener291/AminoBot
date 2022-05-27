@@ -144,6 +144,8 @@ def on_text_message(data):
                                         '[c]Send your message to the creator.\n\n'
                                         '[ci]!follow\n'
                                         '[c]Subscribe to you <3.\n\n'
+                                        '[ci]!msg [text]\n'
+                                        '[c]Sends your message.\n\n'
                                         '[ci]!joincom (community-link)\n'
                                         '[c]Joins the community.\n\n'
                                         '[ci]!joinchat (chat-link)\n'
@@ -414,6 +416,14 @@ def on_text_message(data):
                 command = content[1]
                 if allow_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} allowed!')
+            except Exception as e: print(e)
+        
+        if content[0].lower() == 'msg':
+            try:
+                message = ' '.join(content[1:])
+                if not message:
+                    return sub_client.send_message(chatId=chat_id, message='[i]Hi, friends!')
+                return sub_client.send_message(chatId=chat_id, message=message)
             except Exception as e: print(e)
 
         try:
