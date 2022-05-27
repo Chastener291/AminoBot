@@ -14,7 +14,7 @@ Only supports Python >=3.6, to install aminofix, run `pip install amino.fix`.
 6. Fill in the constants in the db.py.
 7. Run the main.py.
 8. Enjoy.
-9. If you want you can delete db_init.py.
+9. If you want you can delete db_init.py, start.py and other unused files.
 
 ### Useful discord servers:
 [Dev Land](https://discord.com/invite/68wchgsKdX), [Amino.fix](https://discord.gg/Bf3dpBRJHj), [TechVision](https://discord.gg/JyVZEVXGZE), I'm - K1rLes#3663 
