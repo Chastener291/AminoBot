@@ -339,6 +339,12 @@ def on_text_message(data):
                 sub_client.follow(userId=author_id)
                 return sub_client.send_message(**kwargs, message='Successful subscription!')
             except Exception as e: print(e)
+        
+        if content[0].lower() == 'unfollow':
+            try:
+                sub_client.unfollow(userId=author_id)
+                return sub_client.send_message(**kwargs, message='Successful unsubscribe!')
+            except Exception as e: print(e)
        
         if content[0] == 'joincom':
             try:
