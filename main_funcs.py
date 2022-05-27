@@ -2,6 +2,7 @@ import time
 import aminofix as amino
 import random as rnd
 from db import *
+from fancy_text import fancy
 from google_trans import google_translator
 
 
