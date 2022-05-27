@@ -35,7 +35,7 @@ def on_text_message(data):
         # A little magic
         # console_log(msg_time, chat_name, author_name, msg_content)
         kwargs = {"chatId": chat_id, "replyTo": msg_id}  # "comId": com_id
-        content = str(msg_content).split()
+        content = str(msg_content).split()  # after that the newlines (\n) is removed
         # pprint.pprint(data.json)
 
         if len(content[0]) == 1:  # content == "! sddfh", "! save" etc
@@ -102,7 +102,9 @@ def on_text_message(data):
                                         '[ci]!block (command)\n'
                                         '[c]Blocks a command in chat. (Available only for Host ans coHosts)\n\n'
                                         '[ci]!allow (command)\n'
-                                        '[c]Allow a command in chat. (Available only for Host ans coHosts)')
+                                        '[c]Allow a command in chat. (Available only for Host ans coHosts)\n\n'
+                                        '[ci]!blockedlist\n'
+                                        '[c]List of blocked commands.')
                 return
             except Exception as e: print(e)
 
@@ -424,6 +426,13 @@ def on_text_message(data):
                 command = content[1]
                 if allow_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} allowed!')
+            except Exception as e: print(e)
+        
+        if content[0].lower() == 'blockedlist':
+            try:
+                blocked_list = ', '.join(sorted(list(set(blocked_commands(chat_id).split()))))
+                return sub_client.send_message(**kwargs, message=
+                                               f'Blocked commands: {blocked_list if blocked_list else "Nope"}.')
             except Exception as e: print(e)
         
         if content[0].lower() == 'msg':
