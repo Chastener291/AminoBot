@@ -122,6 +122,8 @@ def on_text_message(data):
                                         '[c]How many users are watching the chat.\n\n'
                                         '[ci]!tr (reply)/(text)\n'
                                         '[c]Translate reply message or your message.\n\n'
+                                        '[ci]!fancy (text)\n'
+                                        '[c]Makes the font look nice.\n\n'
                                         '[bc]Duels\n'
                                         '[ci]!duel send (@notify)\n'
                                         '[c]Sends a duel to whoever is mentioned.\n\n'
@@ -424,6 +426,16 @@ def on_text_message(data):
                 if not message:
                     return sub_client.send_message(chatId=chat_id, message='[i]Hi, friends!')
                 return sub_client.send_message(chatId=chat_id, message=message)
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'fancy':
+            try:
+                text = ' '.join(content[1:])
+                t1 = fancy.light(text)
+                t2 = fancy.box(text)
+                t3 = fancy.bold(text)
+                t4 = fancy.sorcerer(text)
+                return sub_client.send_message(**kwargs, message=f'{t1}\n\n{t2}\n\n{t3}\n\n{t4}')
             except Exception as e: print(e)
 
         try:
