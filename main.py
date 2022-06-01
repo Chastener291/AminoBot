@@ -430,7 +430,7 @@ def on_text_message(data):
                 command = content[1]
                 if allow_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} allowed!')
-                return sub_client.send_message(**kwargs, message=f'Cant block this command!')
+                return sub_client.send_message(**kwargs, message=f'Cant allow this command!')
             except Exception as e: print(e)
         
         if content[0].lower() == 'blockedlist':
