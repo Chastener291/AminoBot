@@ -146,9 +146,9 @@ def func_user_info(user_id, sub_client):  # for other info check info_user.json 
     if user_role == 0:
         user_role = 'Member'
     elif user_role == 100:
-        user_role = 'Curator'
-    elif user_role == 101:
         user_role = 'Leader'
+    elif user_role == 101:
+        user_role = 'Curator'
     elif user_role == 102:
         user_role = 'Agent'
 
