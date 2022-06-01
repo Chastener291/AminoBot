@@ -96,16 +96,16 @@ def on_text_message(data):
                                         '[bc]Chat management\n\n'
                                         '[ci]!save\n'
                                         '[c]Saving the title, description, icon and background of the current chat to the database. '
-                                        '(Available only for Host ans coHosts)\n\n'
+                                        '(Available only for Host and coHosts)\n\n'
                                         '[ci]!upload\n'
                                         '[c]Set the title, description, icon and background from the last save of the current chat. '
-                                        '(Available only for Host ans coHosts. Bot must have a coHost or Host)\n\n'
+                                        '(Available only for Host and coHosts. Bot must have a coHost or Host)\n\n'
                                         '[ci]!mention [message]\n'
                                         '[c]Mentions all chat members. (Available only to the Host)\n\n'
                                         '[ci]!block (command)\n'
-                                        '[c]Blocks a command in chat. (Available only for Host ans coHosts)\n\n'
+                                        '[c]Blocks a command in chat. (Available only for Host and coHosts)\n\n'
                                         '[ci]!allow (command)\n'
-                                        '[c]Allow a command in chat. (Available only for Host ans coHosts)\n\n'
+                                        '[c]Allow a command in chat. (Available only for Host and coHosts)\n\n'
                                         '[ci]!blockedlist\n'
                                         '[c]List of blocked commands.')
                 return
@@ -187,7 +187,7 @@ def on_text_message(data):
             try:
                 try: url_id = str(id_from_url(content[1]))
                 except Exception: url_id = 'None'
-                if url_id == 'None':  #  bad link etc
+                if url_id == 'None' or url_id is None:  #  bad link etc
                     return sub_client.send_message(**kwargs, message='Bad argument (link).')
                 return sub_client.send_message(**kwargs, message=url_id)
             except Exception as e: print(e)
@@ -198,7 +198,7 @@ def on_text_message(data):
                 if len(content) != 1:  # for call with link
                     try: author_id = id_from_url(content[1])
                     except Exception: author_id = 'None'
-                    if author_id == 'None':  # bad link etc
+                    if author_id == 'None' or author_id is None:  # bad link etc
                         return sub_client.send_message(**kwargs, message='Bad argument (link).')
                 try: user_message = func_user_info(author_id, sub_client)
                 except Exception as error: user_message = None
@@ -213,7 +213,7 @@ def on_text_message(data):
                 if len(content) != 1:  # for call with link
                     try: chat_id = id_from_url(content[1])
                     except Exception as e: print(e); chat_id = 'None'
-                    if chat_id == 'None':  # bad link etc
+                    if chat_id == 'None' or chat_id is None:  # bad link etc
                         return sub_client.send_message(**kwargs, message='Bad argument (link).')
                 try: chat_message = func_chat_info(chat_id, sub_client)
                 except Exception as error: chat_message = None
@@ -227,8 +227,8 @@ def on_text_message(data):
                 error = 'Bad argument (link).'
                 if len(content) != 1:  # for call with link
                     try: com_id = id_from_url(content[1])
-                    except Exception: chat_id = 'None'
-                    if chat_id == 'None':  # bad link etc
+                    except Exception: com_id = 'None'
+                    if com_id == 'None' or com_id is None:  # bad link etc
                         return sub_client.send_message(**kwargs, message='Bad argument (link).')
                 try: com_message = func_com_info(com_id)
                 except Exception as error: com_message = None
@@ -420,6 +420,7 @@ def on_text_message(data):
                 command = content[1]
                 if block_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} blocked!')
+                return sub_client.send_message(**kwargs, message=f'Cant block this command!')
             except Exception as e: print(e)
 
         if content[0].lower() == 'allow':
@@ -429,6 +430,7 @@ def on_text_message(data):
                 command = content[1]
                 if allow_command(chat_id, command):
                     return sub_client.send_message(**kwargs, message=f'Command {command} allowed!')
+                return sub_client.send_message(**kwargs, message=f'Cant block this command!')
             except Exception as e: print(e)
         
         if content[0].lower() == 'blockedlist':

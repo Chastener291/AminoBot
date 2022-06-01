@@ -70,18 +70,18 @@ def id_from_url(url):
     except Exception: return 'None'
 
 
-def url_from_id(objectId: str, objectType: int, comId=None):
-    # ObjectType. 0 - user, 12 - chat
-    # if comId is None - check global, else - check in community. comId is str
-    shortUrl = None
-    if objectType is None or objectId is None: raise TypeError('objectId or objectType is None')
-    if comId is not None:
-        if objectType == 0:  # user
-            shortUrl = client.get_from_id(objectId=objectId, objectType=objectType, comId=comId).json['extensions']['linkInfo']['shareURLShortCode']
-    else:
-        if objectType == 0:  # user
-            shortUrl = client.get_from_id(objectId=objectId, objectType=objectType).json['extensions']['linkInfo']['shareURLShortCode']
-    return shortUrl
+# def url_from_id(objectId: str, objectType: int, comId=None):
+#     # ObjectType. 0 - user, 12 - chat
+#     # if comId is None - check global, else - check in community. comId is str
+#     shortUrl = None
+#     if objectType is None or objectId is None: raise TypeError('objectId or objectType is None')
+#     if comId is not None:
+#         if objectType == 0:  # user
+#             shortUrl = client.get_from_id(objectId=objectId, objectType=objectType, comId=comId).json['extensions']['linkInfo']['shareURLShortCode']
+#     else:
+#         if objectType == 0:  # user
+#             shortUrl = client.get_from_id(objectId=objectId, objectType=objectType).json['extensions']['linkInfo']['shareURLShortCode']
+#     return shortUrl
 
 
 def save_chat(chat_id, sub_client):  # Save chat info in database.db
@@ -110,7 +110,7 @@ def func_user_info(user_id, sub_client):  # for other info check info_user.json 
     info_user_amino = client.get_user_info(userId=user_id)
     try: user_name = 'No info' if info_user_com.nickname is None else info_user_com.nickname
     except Exception: user_name = 'No info'
-    try: user_global_url = 'No info' if url_from_id(user_id, 0) is None else url_from_id(user_id, 0)
+    try: user_global_url = 'No info' if client.get_from_id(user_id, 0) is None else client.get_from_id(user_id, 0)
     except Exception: user_global_url = 'No info'
     try: user_created = 'No info' if info_user_amino.createdTime is None else ' '.join(info_user_amino.createdTime[:-1].split('T'))
     except Exception: user_created = 'No info'
@@ -236,7 +236,7 @@ def func_com_info(com_id):
     except Exception: com_agent_name = 'No info'
     try: com_agent_id = 'No info' if info_com.agent.userId is None else info_com.agent.userId
     except Exception: com_agent_id = 'No info'
-    try: com_agent_global_url = 'No info' if url_from_id(com_agent_id, 0) is None else url_from_id(com_agent_id, 0)
+    try: com_agent_global_url = 'No info' if client.get_from_id(com_agent_id, 0) is None else client.get_from_id(com_agent_id, 0)
     except Exception: com_agent_global_url = 'No info'
     # try: com_rankingTable = 'No info' if info_com.rankingTable.title is None else ', '.join(info_com.rankingTable.title)
     # except Exception: com_rankingTable = 'No info'

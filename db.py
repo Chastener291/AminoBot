@@ -36,6 +36,7 @@ def blocked_commands(chat_id):
 
 
 def block_command(chat_id, command):
+    if command in ('block', 'allow', 'blockedlist'): return False
     with sqlite3.connect('database.db', check_same_thread=False) as db:
         sql = db.cursor()
         chat_ids = [i[0] for i in sql.execute("SELECT chat_id FROM commands")]
@@ -51,6 +52,7 @@ def block_command(chat_id, command):
 
 
 def allow_command(chat_id, command):
+    if command in ('block', 'allow', 'blockedlist'): return False
     with sqlite3.connect('database.db', check_same_thread=False) as db:
         sql = db.cursor()
         commands = sql.execute(f"SELECT command FROM commands WHERE chat_id = '{chat_id}'").fetchone()[0]
