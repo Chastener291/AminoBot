@@ -164,11 +164,17 @@ def func_chat_info(chat_id, sub_client):
     except Exception: chat_title = 'No info'
     try: chat_url = client.get_from_id(objectId=info_chat.chatId, objectType=12, comId=info_chat.comId).shortUrl
     except Exception: chat_url = 'No info'
-    try: chat_author_id = 'No info' if info_chat.creatorId is None else info_chat.creatorId
-    except Exception: chat_author_id = 'No info'
-    try: chat_host_com_url = client.get_from_id(chat_author_id, 0, comId=info_chat.comId).shortUrl
+    try: chat_creator_id = 'No info' if info_chat.creatorId is None else info_chat.creatorId
+    except Exception: chat_creator_id = 'No info'
+    try: chat_creator_com_url = client.get_from_id(chat_creator_id, 0, comId=info_chat.comId).shortUrl
+    except Exception: chat_creator_com_url = 'No info'
+    try: chat_creator_global_url = client.get_from_id(chat_creator_id, 0).shortUrl
+    except Exception: chat_creator_global_url = 'No info'
+    try: chat_host_id = 'No info' if info_chat.json['author']['uid'] is None else info_chat.json['author']['uid']
+    except Exception: chat_host_id = 'No info'
+    try: chat_host_com_url = client.get_from_id(chat_host_id, 0, comId=info_chat.comId).shortUrl
     except Exception: chat_host_com_url = 'No info'
-    try: chat_host_global_url = client.get_from_id(chat_author_id, 0).shortUrl
+    try: chat_host_global_url = client.get_from_id(chat_host_id, 0).shortUrl
     except Exception: chat_host_global_url = 'No info'
     try: chat_language = 'No info' if info_chat.language is None else info_chat.language.upper()
     except Exception: chat_language = 'No info'
@@ -191,6 +197,7 @@ def func_chat_info(chat_id, sub_client):
     chat_message = '\n'.join([
         f'Chat title: {chat_title}',
         f'Link: {chat_url}',
+        f"Chat's creator: {chat_creator_com_url}, {chat_creator_global_url}",
         f"Chat's host: {chat_host_com_url}, {chat_host_global_url}",
         f'Chat created: {chat_created}',
         f'Chat lang: {chat_language}',
