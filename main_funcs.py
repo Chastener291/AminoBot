@@ -116,6 +116,8 @@ def func_user_info(user_id, sub_client):  # for other info check info_user.json 
     except Exception: user_created = 'No info'
     try: user_join_com = 'No info' if info_user_com.createdTime is None else ' '.join(info_user_com.createdTime[:-1].split('T'))
     except Exception: user_join_com = 'No info'
+    try: user_role = 'No info' if info_user_com.role is None else info_user_com.role
+    except Exception: user_role = 'No info'
     try: user_modified = 'No info' if info_user_com.modifiedTime is None else ' '.join(info_user_com.modifiedTime[:-1].split('T'))
     except Exception: user_modified = 'No info'
     try: user_level = 'No info' if info_user_com.level is None else info_user_com.level
@@ -140,11 +142,22 @@ def func_user_info(user_id, sub_client):  # for other info check info_user.json 
     except Exception: user_titles = 'No info'
     try: user_online = 'No info' if info_user_com.onlineStatus is None else info_user_com.onlineStatus
     except Exception: user_online = 'No info'
+
+    if user_role == 0:
+        user_role = 'Member'
+    elif user_role == 100:
+        user_role = 'Curator'
+    elif user_role == 101:
+        user_role = 'Leader'
+    elif user_role == 102:
+        user_role = 'Agent'
+
     user_message = '\n'.join([
         f'Nickname: {user_name}',
         f'Global profile: {user_global_url}',
         f'Account created: {user_created}',
         f'Joined to community: {user_join_com}',
+        f'Role in coo: {user_role}',
         f'Profile change: {user_modified}',
         f'Level and reputation: {user_level}, {user_reputation}',
         f'Followers: {user_followers}',
