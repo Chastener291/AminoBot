@@ -1,12 +1,19 @@
 from main_funcs import *
 
 
+subs = dict()
+
+
 @client.event("on_chat_invite")
 def on_chat_invite(data):
     try:
-        chat_id = data.json['chatMessage']['threadId']
-        com_id = str(data.json['ndcId'])
-        sub_client = amino.SubClient(comId=com_id, profile=client.profile)
+        data = data.json
+        chat_id = data['chatMessage']['threadId']
+        com_id = str(data['ndcId'])
+        try: sub_client = subs[com_id]
+        except KeyError:
+            sub_client = amino.SubClient(comId=com_id, profile=client.profile)
+            subs[data['ndcId']] = sub_client
         sub_client.join_chat(chat_id)
         sub_client.send_message(chatId=chat_id, message=
                                 '[c]Hello <3\n'
@@ -18,25 +25,29 @@ def on_chat_invite(data):
 @client.event("on_text_message")
 def on_text_message(data):
     try:
+        data = data.json
         if data.json['chatMessage']['content'][0] != '!': return
         # Data processing
-        sub_client = amino.SubClient(comId=str(data.json['ndcId']), profile=client.profile)
-        chat_id = data.json['chatMessage']['threadId']
+        com_id = str(data['ndcId'])
+        try: sub_client = subs[com_id]
+        except KeyError:
+            sub_client = amino.SubClient(comId=com_id, profile=client.profile)
+            subs[data['ndcId']] = sub_client
+        chat_id = data['chatMessage']['threadId']
         chat_info = sub_client.get_chat_thread(chat_id)
         chat_host_id = chat_info.json['author']['uid']
         chat_host_name = chat_info.json['author']['nickname']
         # chat_name = chat_info.json['title']
-        author_name = data.json['chatMessage']['author']['nickname']
-        author_id = data.json['chatMessage']['author']['uid']
-        msg_id = data.json['chatMessage']['messageId']
-        msg_time = data.json['chatMessage']['createdTime']
-        msg_content = data.json['chatMessage']['content']
-        com_id = str(data.json['ndcId'])
+        author_name = data['chatMessage']['author']['nickname']
+        author_id = data['chatMessage']['author']['uid']
+        msg_id = data['chatMessage']['messageId']
+        msg_time = data['chatMessage']['createdTime']
+        msg_content = data['chatMessage']['content']
         # A little magic
         # console_log(msg_time, chat_name, author_name, msg_content)
         kwargs = {"chatId": chat_id, "replyTo": msg_id}  # "comId": com_id
         content = str(msg_content).split()  # after that the newlines (\n) is removed
-        # pprint.pprint(data.json)
+        # pprint.pprint(data)
 
         if len(content[0]) == 1:  # content == "! sddfh", "! save" etc
             return
@@ -270,7 +281,7 @@ def on_text_message(data):
 
                 if content[1].lower() == 'send':
                     first = author_id
-                    second = data.json['chatMessage']['extensions']['mentionedArray'][0]['uid']
+                    second = data['chatMessage']['extensions']['mentionedArray'][0]['uid']
                     if first in duels_first_dict.keys() or first in duels_second_dict.keys():
                         return sub_client.send_message(**kwargs, message='You cant send duels right now.')
                     if second in duels_second_dict.keys() or second in duels_first_dict.keys():
@@ -401,8 +412,8 @@ def on_text_message(data):
         if content[0].lower() == 'tr':  # thanks vedansh#4039
             try:
                 try:
-                    reply_content = data.json['chatMessage']['extensions']['replyMessage']['content']
-                    reply_id = data.json['chatMessage']['extensions']['replyMessage']['messageId']
+                    reply_content = data['chatMessage']['extensions']['replyMessage']['content']
+                    reply_id = data['chatMessage']['extensions']['replyMessage']['messageId']
                 except KeyError:
                     reply_content = ' '.join(content[1:])
                     reply_id = msg_id
