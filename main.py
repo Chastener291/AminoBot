@@ -301,7 +301,7 @@ def on_text_message(data):
                     duel = duels_first_dict[duels_second_dict[second]][0]
                     duel.start_duel()
                     sub_client.send_message(chatId=chat_id, mentionUserIds=[duel.first, duel.second, duel.who_start_id], message=
-                                            f'The duel between <${duel.first_name}$> abd <${duel.second_name}$> begins!\n'
+                                            f'The duel between <${duel.first_name}$> and <${duel.second_name}$> begins!\n'
                                             f'(!duel shot, <${duel.who_start_name}$> starts)')
                     return
 
