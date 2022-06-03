@@ -286,11 +286,13 @@ def on_text_message(data):
                         return sub_client.send_message(**kwargs, message='You cant send duels right now.')
                     if second in duels_second_dict.keys() or second in duels_first_dict.keys():
                         return sub_client.send_message(**kwargs, message='Cannot send duel to this user.')
+                    if second == client.userId:
+                        return sub_client.send_message(**kwargs, message='You are so smart, pretty kid.')
                     second_name = sub_client.get_user_info(userId=second).nickname
                     duel = Duel(author_id, second, author_name, second_name, chat_id)
                     duels_first_dict[author_id] = tuple([duel, second])
                     duels_second_dict[second] = author_id
-                    return sub_client.send_message(**kwargs, message=f'Waiting for accept the duel by {second_name}...')
+                    return sub_client.send_message(**kwargs, message=f'Waiting for accept the duel by {second_name}...\n(!duel yes)')
 
                 if content[1].lower() == 'yes':
                     second = author_id
@@ -320,7 +322,7 @@ def on_text_message(data):
                     if message == 'win':
                         name = duel.first_name if author_id == duel.first else duel.second_name
                         sub_client.send_message(**kwargs, mentionUserIds=[author_id], message=
-                                                f'Hit! <${name}$> won this duel!\n'
+                                                f'[bc]Hit! <${name}$> won this duel!\n'
                                                 f'Total shots: {duel.shots}')
                         stop_duel(duel.first, duel.second)
                         return
