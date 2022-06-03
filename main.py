@@ -1,7 +1,7 @@
 from main_funcs import *
 
 
-subs = dict()
+subs = {MAIN_COMID: amino.SubClient(comId=MAIN_COMID, profile=client.profile)}
 
 
 @client.event("on_chat_invite")
@@ -26,7 +26,7 @@ def on_chat_invite(data):
 def on_text_message(data):
     try:
         data = data.json
-        if data.json['chatMessage']['content'][0] != '!': return
+        if data['chatMessage']['content'][0] != '!': return
         # Data processing
         com_id = str(data['ndcId'])
         try: sub_client = subs[com_id]
@@ -63,7 +63,7 @@ def on_text_message(data):
         if content[0].lower() == 'report':
             try:
                 message = report(content[1:], author_id, com_id, chat_id, msg_time)
-                sub_client.send_message(chatId=REPORT_CHAT, message=message)
+                subs[MAIN_COMID].send_message(chatId=REPORT_CHAT, message=message)
                 sub_client.send_message(**kwargs, message='Your message has been sent to the person who hosts this version of the bot!')
                 return
             except Exception as e: print(e)
