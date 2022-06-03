@@ -3,6 +3,7 @@ import sqlite3
 
 EMAIL = 'youremail'  # paste your email
 PASSWORD = 'yourpass'  # paste your password
+MAIN_COMID = 'com_id_for_report_chat'  # paste your community id (str)
 REPORT_CHAT = 'chatId'  # paste the chat id where the bot will send reports
 
 
