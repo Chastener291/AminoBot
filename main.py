@@ -13,7 +13,7 @@ def on_chat_invite(data):
         try: sub_client = subs[com_id]
         except KeyError:
             sub_client = amino.SubClient(comId=com_id, profile=client.profile)
-            subs[data['ndcId']] = sub_client
+            subs[com_id] = sub_client
         sub_client.join_chat(chat_id)
         sub_client.send_message(chatId=chat_id, message=
                                 '[c]Hello <3\n'
@@ -26,13 +26,13 @@ def on_chat_invite(data):
 def on_text_message(data):
     try:
         data = data.json
-        if data['chatMessage']['content'][0] != '!': return
+        if data['chatMessage']['content'][0] != '!': return  # your prefix here
         # Data processing
         com_id = str(data['ndcId'])
         try: sub_client = subs[com_id]
         except KeyError:
             sub_client = amino.SubClient(comId=com_id, profile=client.profile)
-            subs[data['ndcId']] = sub_client
+            subs[com_id] = sub_client
         chat_id = data['chatMessage']['threadId']
         chat_info = sub_client.get_chat_thread(chat_id)
         chat_host_id = chat_info.json['author']['uid']
@@ -75,6 +75,7 @@ def on_text_message(data):
                                         '[ci]info\n'
                                         '[ci]chatmanage\n'
                                         '[ci]fun\n'
+                                        '[ci]duel\n'
                                         '[ci]bot\n\n'
                                         'Send !{category} for command list.\n'
                                         'The values in (brackets) are required.\n'
@@ -130,6 +131,8 @@ def on_text_message(data):
                                         '[c]Reply "pong". Check if the bot is online.\n\n'
                                         '[ci]!roll [start] [end] [times]\n'
                                         '[c]Random number. The default range is 1 to 100.\n\n'
+                                        '[ci]!choice (your-words)\n'
+                                        '[c]Random word.\n\n'
                                         '[ci]!coin\n'
                                         '[c]Tails, heads or edge (0.5%).\n\n'
                                         '[ci]!kickorg\n'
@@ -140,15 +143,8 @@ def on_text_message(data):
                                         '[c]Translate reply message or your message.\n\n'
                                         '[ci]!fancy (text)\n'
                                         '[c]Makes the font look nice.\n\n'
-                                        '[bc]Duels\n'
-                                        '[ci]!duel send (@notify)\n'
-                                        '[c]Sends a duel to whoever is mentioned.\n\n'
-                                        '[ci]!duel stop\n'
-                                        '[c]Cancels the current duel, duel sent to you or sent by you.\n\n'
-                                        '[ci]!duel yes\n'
-                                        '[c]Accept duel. Chance to shoot first - 50%.\n\n'
-                                        '[ci]!duel shot\n'
-                                        '[c]Duel shot. Hit chance - 25%.')
+                                        '[ci]!duel\n'
+                                        '[c]Duel commands.')
                 return
             except Exception as e: print(e)
 
@@ -268,6 +264,18 @@ def on_text_message(data):
 
         if content[0].lower() == 'duel':
             try:
+                if len(content) == 1:
+                    sub_client.send_message(**kwargs, message=
+                                            '[bc]Duels\n'
+                                            '[ci]!duel send (@notify)\n'
+                                            '[c]Sends a duel to whoever is mentioned.\n\n'
+                                            '[ci]!duel stop\n'
+                                            '[c]Cancels the current duel, duel sent to you or sent by you.\n\n'
+                                            '[ci]!duel yes\n'
+                                            '[c]Accept duel. Chance to shoot first - 50%.\n\n'
+                                            '[ci]!duel shot\n'
+                                            '[c]Duel shot. Hit chance - 25%.')
+                    return
                 if content[1].lower() == 'stop':
                     if author_id in duels_first_dict.keys():
                         second = duels_first_dict[author_id][1]
@@ -469,6 +477,12 @@ def on_text_message(data):
                 t3 = fancy.bold(text)
                 t4 = fancy.sorcerer(text)
                 return sub_client.send_message(**kwargs, message=f'{t1}\n\n{t2}\n\n{t3}\n\n{t4}')
+            except Exception as e: print(e)
+
+        if content[0].lower() == 'choice':
+            try:
+                message = rnd.choice(content[1:]) if len(content[1:]) > 0 else '\nYou are so smart, pretty kid'
+                return sub_client.send_message(**kwargs, message=f'Your random word is... {message}!')
             except Exception as e: print(e)
 
         try:
