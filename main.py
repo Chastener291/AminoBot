@@ -266,7 +266,7 @@ def on_text_message(data):
             try:
                 if len(content) == 1:
                     sub_client.send_message(**kwargs, message=
-                                            '[bc]Duels\n'
+                                            '[bc]Duels\n\n'
                                             '[ci]!duel send (@notify)\n'
                                             '[c]Sends a duel to whoever is mentioned.\n\n'
                                             '[ci]!duel stop\n'
