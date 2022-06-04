@@ -158,7 +158,7 @@ def func_user_info(user_id, sub_client):  # for other info check info_user.json 
         f'Account created: {user_created}',
         f'Joined to community: {user_join_com}',
         f'Role in coo: {user_role}',
-        f'Profile change: {user_modified}',
+        f'Profile changed: {user_modified}',
         f'Level and reputation: {user_level}, {user_reputation}',
         f'Followers: {user_followers}',
         f'Following: {user_following}',
